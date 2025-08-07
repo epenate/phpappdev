@@ -3,24 +3,22 @@ name : Codeigniter 4 CI
 on :
   push : 
     branches : [ main ]
+jobs :
+  build-and-test :    
+     run-on : Ubuntu-latest
+     steps :
+       - name : Clonar Repositorio
+         uses : action/checkout@3
 
-  jobs :
-    build-and-test :
-      run-on : Ubuntu-latest
-    
-    steps :
-      - name : Clonar Repositorio
-        uses : action/checkout@3
+       - name : Configurar PHP
+         uses : shivammathur/setup-php@v2
+         with :
+           php-version : '8.2'
+           extensions : intl, mbstring, mysqli, pdo, pdo_mysql
 
-      - name : Configurar PHP
-        uses : shivammathur/setup-php@v2
-        with :
-          php-version : '8.2'
-          extensions : intl, mbstring, mysqli, pdo, pdo_mysql
+       - name : Instalar dependecias
+         run : composer install
 
-      - name : Instalar dependecias
-        run : composer install
-
-      - name : Ejecutar pruebas
-        run : vendor/bin/phpunit
+       - name : Ejecutar pruebas
+         run : vendor/bin/phpunit
         
